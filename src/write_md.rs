@@ -1,5 +1,11 @@
 
-pub fn write_md_file(_path: &String, _csv: &Vec<Vec<String>>) {
+use std::fs::File;
+use std::io::Write;
+
+pub fn write_md_file(path: &String, csv: &Vec<Vec<String>>) {
+    let md = gen_md_table(csv);
+    let mut f = File::create(path).expect("Oops...");
+    write!(f, "{}", md).expect("Is this really possible that the program fails here?");
 }
 
 /// From a vector of string such as `["abc", "def ", "ghi"]`, makes a line of
@@ -18,7 +24,7 @@ fn vec_to_md_line(v: &Vec<String>) -> String {
 fn vec_to_md_guard(v: &Vec<String>) -> String {
     let mut ret = "|".to_string();
     for elem in v {
-        for _i in 1..elem.len() {
+        for _i in 0..elem.len() {
             ret.push('-');
         }
         ret.push('|');
@@ -30,9 +36,9 @@ fn vec_to_md_guard(v: &Vec<String>) -> String {
 /// lines and the columns have been inverted.
 fn flip_vector(v: &Vec<Vec<String>>) -> Vec<Vec<String>> {
     let mut ret: Vec<Vec<String>> = Vec::new();
-    for i in 1..v[0].len() {
+    for i in 0..v[0].len() {
         let mut column: Vec<String> = Vec::new();
-        for j in 1..v.len() {
+        for j in 0..v.len() {
             column.push(v[j][i].clone());
         }
         ret.push(column);
@@ -61,3 +67,31 @@ fn equalize_line(v: &Vec<String>, trail: char) -> Vec<String> {
     return ret;
 }
 
+/// From a 2D vector of string, returns a similar vector where all elements of
+/// each columns are of the same size. Elements that need it are lengthen with
+/// a trailing char.
+fn equalize_columns_table(v: &Vec<Vec<String>>, trail: char) -> Vec<Vec<String>> {
+    let flipted_table = flip_vector(v);
+    let mut balanced_table: Vec<Vec<String>> = Vec::new();
+    for column in &flipted_table {
+        balanced_table.push(equalize_line(&column, trail));
+    }
+    return flip_vector(&balanced_table);
+}
+
+/// Generates string with a table in markdown from a 2D vector of strings.
+fn gen_md_table(v: &Vec<Vec<String>>) -> String {
+    let fixed_table = equalize_columns_table(v, ' ');
+    let mut ret = String::new();
+    let mut first_line = true;
+    for line in &fixed_table {
+        ret = ret + &vec_to_md_line(line);
+        ret.push('\n');
+        if first_line {
+            first_line = false;
+            ret = ret + &vec_to_md_guard(line);
+            ret.push('\n');
+        }
+    }
+    return ret;
+}
