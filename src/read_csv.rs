@@ -4,7 +4,7 @@ use std::fs;
 /// The main function of this module; from the path to a csv file, returns a 2D
 /// vector representing the table.
 /// TODO: Error handling without expect...
-pub fn open_file(path: &String) -> Vec<Vec<String>> {
+pub fn read_csv_file(path: &String) -> Vec<Vec<String>> {
     let raw_csv = open_file_as_lines(path);
     return clean_csv(&raw_csv);
 }
