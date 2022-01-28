@@ -4,6 +4,6 @@ mod read_csv;
 use read_csv::open_file;
 
 fn main() {
-    open_file("test.csv".to_string());
+    open_file(&"test.csv".to_string());
     println!("Bobignou!");
 }
