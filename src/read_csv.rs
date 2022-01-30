@@ -99,14 +99,53 @@ fn equilize_str_vec(v: &Vec<Vec<String>>) -> Vec<Vec<String>> {
     return ret;
 }
 
-// TODO: remove trailing empty columns...
+/// From a list of lines, removes all the empty trailing lines.
+fn remove_trailing_empty_lines(s: &Vec<String>) -> Vec<String> {
+    let mut ret: Vec<String> = s.clone();
+    while ret.len() >= 1 && ret[ret.len()-1] == "" {
+        ret.pop();
+    }
+    return ret;
+}
+
+/// Finds the number of empy columns in a 2D vector of strings.
+fn count_empty_columns(v: &Vec<Vec<String>>) -> usize {
+    if v.len() == 0 {
+        return 0;
+    }
+    let mut min_empty_columns = 0;
+    for line in v {
+        for i in 0..line.len() {
+            if line[i] == "" {
+                if i > min_empty_columns {
+                    min_empty_columns = i;
+                }
+                break;
+            }
+        }
+    }
+    return min_empty_columns;
+}
+
+/// Removes empty trailing comunks from a 2D vector of strings.
+/// Unlike the other functions, this one is not pure.
+fn remove_trailing_empty_columns(v: &mut Vec<Vec<String>>) {
+    let min_empty_columns = count_empty_columns(v);
+    for i in 0..v.len() {
+        for _j in min_empty_columns..v[i].len() {
+            v[i].pop();
+        }
+    }
+}
 
 /// From the lines extracted from a csv file, returns a clean 2D vector of each
 /// cases of the table.
 fn clean_csv(csv_lines: &Vec<String>) -> Vec<Vec<String>> {
-    let base_table = split_strings_in_vector(&csv_lines, ",");
+    let clened_lines = remove_trailing_empty_lines(&csv_lines);
+    let base_table = split_strings_in_vector(&clened_lines, ",");
     let pruned_table = remove_leading_trailing_whitespace_2D(&base_table);
-    let balanced_table = equilize_str_vec(&pruned_table);
+    let mut balanced_table = equilize_str_vec(&pruned_table);
+    remove_trailing_empty_columns(&mut balanced_table);
     return balanced_table;
 }
 
