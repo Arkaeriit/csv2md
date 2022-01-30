@@ -28,10 +28,10 @@ fn parse_delimiter(s: &str) -> String {
 
 /// A tool to convert CSV files as markdown tables.
 #[derive(Parser, Debug)]
-#[clap(author, version, about, long_about = None)]
+#[clap(about, long_about = None)]
 struct Args {
     /// CSV file used as input.
-    #[clap(short, long, default_value = "/dev/stdin")]
+    #[clap(short, long)]
     input_file: String,
 
     /// Markdown file where the table will be written.
@@ -43,3 +43,4 @@ struct Args {
     #[clap(short, long, default_value = ",")]
     delimiter: String,
 }
+
