@@ -4,9 +4,9 @@ use std::fs;
 /// The main function of this module; from the path to a csv file, returns a 2D
 /// vector representing the table.
 /// TODO: Error handling without expect...
-pub fn read_csv_file(path: &String) -> Vec<Vec<String>> {
+pub fn read_csv_file(path: &String, delimiter: &str) -> Vec<Vec<String>> {
     let raw_csv = open_file_as_lines(path);
-    return clean_csv(&raw_csv);
+    return clean_csv(&raw_csv, delimiter);
 }
 
 /// From the path of a file, returns a vector where each entry is a line of
@@ -108,7 +108,7 @@ fn remove_trailing_empty_lines(s: &Vec<String>) -> Vec<String> {
     return ret;
 }
 
-/// Finds the number of empy columns in a 2D vector of strings.
+/// Finds the number of empty columns in a 2D vector of strings.
 fn count_empty_columns(v: &Vec<Vec<String>>) -> usize {
     if v.len() == 0 {
         return 0;
@@ -127,7 +127,7 @@ fn count_empty_columns(v: &Vec<Vec<String>>) -> usize {
     return min_empty_columns;
 }
 
-/// Removes empty trailing comunks from a 2D vector of strings.
+/// Removes empty trailing columns from a 2D vector of strings.
 /// Unlike the other functions, this one is not pure.
 fn remove_trailing_empty_columns(v: &mut Vec<Vec<String>>) {
     let min_empty_columns = count_empty_columns(v);
@@ -140,9 +140,9 @@ fn remove_trailing_empty_columns(v: &mut Vec<Vec<String>>) {
 
 /// From the lines extracted from a csv file, returns a clean 2D vector of each
 /// cases of the table.
-fn clean_csv(csv_lines: &Vec<String>) -> Vec<Vec<String>> {
+fn clean_csv(csv_lines: &Vec<String>, delimiter: &str) -> Vec<Vec<String>> {
     let clened_lines = remove_trailing_empty_lines(&csv_lines);
-    let base_table = split_strings_in_vector(&clened_lines, ",");
+    let base_table = split_strings_in_vector(&clened_lines, delimiter);
     let pruned_table = remove_leading_trailing_whitespace_2D(&base_table);
     let mut balanced_table = equilize_str_vec(&pruned_table);
     remove_trailing_empty_columns(&mut balanced_table);
