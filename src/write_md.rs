@@ -1,11 +1,19 @@
 
-use std::fs::File;
-use std::io::Write;
-
-pub fn write_md_file(path: &String, csv: &Vec<Vec<String>>) {
-    let md = gen_md_table(csv);
-    let mut f = File::create(path).expect("Oops...");
-    write!(f, "{}", md).expect("Is this really possible that the program fails here?");
+/// Generates string with a table in markdown from a 2D vector of strings.
+pub fn gen_md_table(v: &Vec<Vec<String>>) -> String {
+    let fixed_table = equalize_columns_table(v, ' ');
+    let mut ret = String::new();
+    let mut first_line = true;
+    for line in &fixed_table {
+        ret = ret + &vec_to_md_line(line);
+        ret.push('\n');
+        if first_line {
+            first_line = false;
+            ret = ret + &vec_to_md_guard(line);
+            ret.push('\n');
+        }
+    }
+    return ret;
 }
 
 /// From a vector of string such as `["abc", "def ", "ghi"]`, makes a line of
@@ -79,19 +87,3 @@ fn equalize_columns_table(v: &Vec<Vec<String>>, trail: char) -> Vec<Vec<String>>
     return flip_vector(&balanced_table);
 }
 
-/// Generates string with a table in markdown from a 2D vector of strings.
-fn gen_md_table(v: &Vec<Vec<String>>) -> String {
-    let fixed_table = equalize_columns_table(v, ' ');
-    let mut ret = String::new();
-    let mut first_line = true;
-    for line in &fixed_table {
-        ret = ret + &vec_to_md_line(line);
-        ret.push('\n');
-        if first_line {
-            first_line = false;
-            ret = ret + &vec_to_md_guard(line);
-            ret.push('\n');
-        }
-    }
-    return ret;
-}

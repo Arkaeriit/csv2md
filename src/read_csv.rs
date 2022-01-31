@@ -1,30 +1,11 @@
 
-use std::fs;
+use crate::easy_io::split_to_vec;
 
-/// The main function of this module; from the path to a csv file, returns a 2D
-/// vector representing the table.
-/// TODO: Error handling without expect...
-pub fn read_csv_file(path: &String, delimiter: &str) -> Vec<Vec<String>> {
-    let raw_csv = open_file_as_lines(path);
-    return clean_csv(&raw_csv, delimiter);
+/// The main function of this module; from a list of lines from a csv file,
+/// returns a 2D vector representing the table.
+pub fn read_csv_lines(raw_csv: &Vec<String>, delimiter: &str) -> Vec<Vec<String>> {
+    return clean_csv(raw_csv, delimiter);
 }
-
-/// From the path of a file, returns a vector where each entry is a line of
-/// the input file.
-fn open_file_as_lines(path: &String) -> Vec<String> {
-    let raw_csv = fs::read_to_string(path).expect("Unable to open input file.");
-    return split_to_vec(&raw_csv, "\n");
-}
-
-/// This function is splits a string into a vector.
-fn split_to_vec(full_str: &String, delimiter: &str) -> Vec<String> {
-    let mut ret: Vec<String> = Vec::new();
-    for s in full_str.split(delimiter) {
-        ret.push(s.to_string())
-    }
-    return ret;
-}
-
 
 /// Removes a copy of the string without trailing or leading white-space.
 fn remove_leading_trailing_whitespace(s: &String) -> String {

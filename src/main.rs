@@ -1,18 +1,24 @@
 
 mod read_csv;
-use crate::read_csv::read_csv_file;
+use crate::read_csv::read_csv_lines;
 
 mod write_md;
-use crate::write_md::write_md_file;
+use crate::write_md::gen_md_table;
+
+mod easy_io;
+use crate::easy_io::open_file_as_lines;
+use crate::easy_io::write_to_path;
 
 use clap::Parser;
 
 fn main() {
     let args = Args::parse();
 
-    let csv_table = read_csv_file(&args.input_file, &parse_delimiter(&args.delimiter));
+    let raw_csv = open_file_as_lines(&args.input_file);
+    let csv_table = read_csv_lines(&raw_csv, &parse_delimiter(&args.delimiter));
     if csv_table.len() >= 1 {
-        write_md_file(&args.output_file, &csv_table);
+        let md = gen_md_table(&csv_table);
+        write_to_path(&args.output_file, &md);
     } else {
         println!("Error, input table is empty. Not writing to the output file.");
         std::process::exit(1);
