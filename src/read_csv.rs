@@ -113,7 +113,7 @@ fn count_empty_columns(v: &Vec<Vec<String>>) -> usize {
 fn remove_trailing_empty_columns(v: &mut Vec<Vec<String>>) {
     let min_empty_columns = count_empty_columns(v);
     for i in 0..v.len() {
-        for _j in min_empty_columns..v[i].len() {
+        for _j in 0..min_empty_columns {
             v[i].pop();
         }
     }

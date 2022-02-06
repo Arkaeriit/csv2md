@@ -11,7 +11,7 @@ pub fn open_file_as_lines(path: &String) -> Vec<String> {
 }
 
 /// This function is splits a string into a vector.
-pub fn split_to_vec(full_str: &String, delimiter: &str) -> Vec<String> {
+pub fn split_to_vec(full_str: &str, delimiter: &str) -> Vec<String> {
     let mut ret: Vec<String> = Vec::new();
     for s in full_str.split(delimiter) {
         ret.push(s.to_string())

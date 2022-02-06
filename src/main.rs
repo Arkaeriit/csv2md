@@ -1,4 +1,7 @@
 
+#[cfg(test)]
+mod test;
+
 mod read_csv;
 use crate::read_csv::read_csv_lines;
 
