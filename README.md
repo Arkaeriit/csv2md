@@ -24,6 +24,10 @@ The table can then be rendered like this:
 |data 1  |data 2  |data 3  |
 |1       |2       |3       |
 
+## Features
+
+A nice feature of this software is that empty trailing lines and columns are removed to let the generated table look neat and tidy.
+
 ## Usage
 
 ```
