@@ -1,6 +1,9 @@
 
 /// Generates string with a table in markdown from a 2D vector of strings.
 pub fn gen_md_table(v: &Vec<Vec<String>>) -> String {
+    if v.len() == 0 {
+        return "".to_string();
+    }
     let fixed_table = equalize_columns_table(v, ' ');
     let mut ret = String::new();
     let mut first_line = true;

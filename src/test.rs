@@ -31,6 +31,40 @@ fn testing_trailing_columns_and_lines() {
     cmp_csv_md(basic_table, ref_table);
 }
 
+#[test]
+fn testing_not_csv_input() {
+    let not_csv = "Bobignou";
+    let is_that_even_a_table = "|Bobignou|\n|--------|\n";
+    cmp_csv_md(not_csv, is_that_even_a_table);
+}
+
+#[test]
+fn testing_empty_input() {
+    let no = "";
+    cmp_csv_md(no, no);
+}
+
+#[test]
+fn testing_empty_line() {
+    let lines = "\n\n\n";
+    let no = "";
+    cmp_csv_md(lines, no);
+}
+
+#[test]
+fn testing_empty_table() {
+    let table = ", , , \n, ,  \n  ,  ,  ,\n";
+    let no = "";
+    cmp_csv_md(table, no);
+}
+
+#[test]
+fn testing_empty_line_in_normal_table() {
+    let csv = "a, b, , \n\n  c,  d,  ,\n";
+    let md = "|a|b|\n|-|-|\n| | |\n|c|d|\n";
+    cmp_csv_md(csv, md);
+}
+
 /// This functions tries to compare a CSV string and a md table.
 fn cmp_csv_md(csv: &str, md: &str) {
     let table_lines = split_to_vec(&csv, "\n");

@@ -133,6 +133,11 @@ fn clean_csv(csv_lines: &Vec<String>, delimiter: &str) -> Vec<Vec<String>> {
     let pruned_table = remove_leading_trailing_whitespace_2D(&base_table);
     let mut balanced_table = equilize_str_vec(&pruned_table);
     remove_trailing_empty_columns(&mut balanced_table);
+    if balanced_table.len() > 0 {
+        if balanced_table[0].len() == 0 {
+            return Vec::new();
+        }
+    }
     return balanced_table;
 }
 
