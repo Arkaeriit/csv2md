@@ -24,6 +24,13 @@ fn testing_trailing_columns() {
     cmp_csv_md(basic_table, ref_table);
 }
 
+#[test]
+fn testing_trailing_columns_and_lines() {
+    let basic_table = "1, 2, , , , , \n3, 4, , , , \n5, 6\n\n";
+    let ref_table = "|1|2|\n|-|-|\n|3|4|\n|5|6|\n";
+    cmp_csv_md(basic_table, ref_table);
+}
+
 /// This functions tries to compare a CSV string and a md table.
 fn cmp_csv_md(csv: &str, md: &str) {
     let table_lines = split_to_vec(&csv, "\n");

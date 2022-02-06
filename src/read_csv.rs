@@ -89,20 +89,26 @@ fn remove_trailing_empty_lines(s: &Vec<String>) -> Vec<String> {
     return ret;
 }
 
+/// Count the number of trailing empty strings in a vector of those.
+fn count_empty_str(v: &Vec<String>) -> usize {
+    for i in 0..v.len() {
+        let used_index = v.len() - i - 1;
+        if v[used_index] != "" {
+            return i;
+        }
+    }
+    return v.len();
+}
+
 /// Finds the number of empty columns in a 2D vector of strings.
 fn count_empty_columns(v: &Vec<Vec<String>>) -> usize {
     if v.len() == 0 {
         return 0;
     }
-    let mut min_empty_columns = 0;
+    let mut min_empty_columns = v[0].len();
     for line in v {
-        for i in 0..line.len() {
-            if line[i] == "" {
-                if i > min_empty_columns {
-                    min_empty_columns = i;
-                }
-                break;
-            }
+        if count_empty_str(line) < min_empty_columns {
+            min_empty_columns = count_empty_str(line);
         }
     }
     return min_empty_columns;
