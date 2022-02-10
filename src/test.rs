@@ -72,6 +72,13 @@ fn testing_unicode() {
     cmp_csv_md(csv, md);
 }
 
+#[test]
+fn testing_unicode_2() {
+    let csv = "ô, ö, , \n  ǽ, ő,  ,\n";
+    let md = "|ô|ö|\n|-|-|\n|ǽ|ő|\n";
+    cmp_csv_md(csv, md);
+}
+
 /// This functions tries to compare a CSV string and a md table.
 fn cmp_csv_md(csv: &str, md: &str) {
     let table_lines = split_to_vec(&csv, "\n");
