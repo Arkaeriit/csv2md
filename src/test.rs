@@ -65,6 +65,13 @@ fn testing_empty_line_in_normal_table() {
     cmp_csv_md(csv, md);
 }
 
+#[test]
+fn testing_unicode() {
+    let csv = "Ω, ω, , \n  é,  à,  ,\n";
+    let md = "|Ω|ω|\n|-|-|\n|é|à|\n";
+    cmp_csv_md(csv, md);
+}
+
 /// This functions tries to compare a CSV string and a md table.
 fn cmp_csv_md(csv: &str, md: &str) {
     let table_lines = split_to_vec(&csv, "\n");

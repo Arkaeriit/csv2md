@@ -35,7 +35,7 @@ fn vec_to_md_line(v: &Vec<String>) -> String {
 fn vec_to_md_guard(v: &Vec<String>) -> String {
     let mut ret = "|".to_string();
     for elem in v {
-        for _i in 0..elem.len() {
+        for _i in 0..elem.chars().count() {
             ret.push('-');
         }
         ret.push('|');
@@ -63,14 +63,14 @@ fn flip_vector(v: &Vec<Vec<String>>) -> Vec<Vec<String>> {
 fn equalize_line(v: &Vec<String>, trail: char) -> Vec<String> {
     let mut max_len = 0;
     for elem in v {
-        if elem.len() > max_len {
-            max_len = elem.len();
+        if elem.chars().count() > max_len {
+            max_len = elem.chars().count();
         }
     }
     let mut ret: Vec<String> = Vec::new();
     for elem in v {
         let mut new_elem = elem.clone();
-        while new_elem.len() < max_len {
+        while new_elem.chars().count() < max_len {
             new_elem.push(trail);
         }
         ret.push(new_elem);
