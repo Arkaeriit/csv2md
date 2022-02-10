@@ -16,8 +16,12 @@ use clap::Parser;
 
 fn main() {
     let args = Args::parse();
+    let mut arg_input_file = args.input_file;
+    if arg_input_file == "-" {
+        arg_input_file = "/dev/stdin".to_string();
+    }
 
-    let raw_csv = open_file_as_lines(&args.input_file);
+    let raw_csv = open_file_as_lines(&arg_input_file);
     let csv_table = read_csv_lines(&raw_csv, &parse_delimiter(&args.delimiter));
     if csv_table.len() >= 1 {
         let md = gen_md_table(&csv_table);
@@ -39,7 +43,7 @@ fn parse_delimiter(s: &str) -> String {
 #[derive(Parser, Debug)]
 #[clap(about, long_about = None)]
 struct Args {
-    /// CSV file used as input.
+    /// CSV file used as input. You can use `-` if you mean `/dev/stdin`.
     #[clap(short, long)]
     input_file: String,
 
